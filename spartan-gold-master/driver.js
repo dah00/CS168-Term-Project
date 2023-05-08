@@ -4,9 +4,16 @@ let Blockchain = require('./blockchain.js');
 let Block = require('./block.js');
 let Client = require('./client.js');
 let Miner = require('./miner.js');
+let TimeMiner = require('./timeMiner.js')
 let Transaction = require('./transaction.js');
 
 let FakeNet = require('./fake-net.js');
+
+let adjustablePoW = true;
+
+if (adjustablePoW) {
+  Miner = TimeMiner;
+}
 
 console.log("Starting simulation.  This may take a moment...");
 
@@ -39,6 +46,9 @@ let genesis = Blockchain.makeGenesis({
 // (Mickey and Minnie have the default of 2000 rounds).
 let donald = new Miner({name: "Donald", net: fakeNet, startingBlock: genesis, miningRounds: 3000});
 
+// Time Miner - Timothy runs with the adjustable PoW target.
+let timothy = new Miner({name: "Timothy", net: fakeNet, startingBlock: genesis, miningRounds: 3000});
+
 function showBalances(client) {
   console.log(`Alice has ${client.lastBlock.balanceOf(alice.address)} gold.`);
   console.log(`Bob has ${client.lastBlock.balanceOf(bob.address)} gold.`);
@@ -46,6 +56,7 @@ function showBalances(client) {
   console.log(`Minnie has ${client.lastBlock.balanceOf(minnie.address)} gold.`);
   console.log(`Mickey has ${client.lastBlock.balanceOf(mickey.address)} gold.`);
   console.log(`Donald has ${client.lastBlock.balanceOf(donald.address)} gold.`);
+  console.log(`Timothy has ${client.lastBlock.balanceOf(timothy.address)} gold.`);
 }
 
 // Showing the initial balances from Alice's perspective, for no particular reason.
@@ -64,10 +75,12 @@ alice.postTransaction([{ amount: 40, address: bob.address }]);
 
 setTimeout(() => {
   console.log();
-  console.log("***Starting a late-to-the-party miner***");
+  console.log("***Starting a late-to-the-party miners***");
   console.log();
   fakeNet.register(donald);
+  fakeNet.register(timothy);
   donald.initialize();
+  timothy.initialize();
 }, 2000);
 
 // Print out the final balances after it has been running for some time.
@@ -82,6 +95,9 @@ setTimeout(() => {
   console.log(`Donald has a chain of length ${donald.currentBlock.chainLength}:`);
 
   console.log();
+  console.log(`Timothy has a chain of length ${timothy.currentBlock.chainLength}:`);
+
+  console.log();
   console.log("Final balances (Minnie's perspective):");
   showBalances(minnie);
 
@@ -93,5 +109,9 @@ setTimeout(() => {
   console.log("Final balances (Donald's perspective):");
   showBalances(donald);
 
+  console.log();
+  console.log("Final balances (Timothy's perspective):");
+  showBalances(timothy);
+
   process.exit(0);
-}, 5000);
+}, 150000);
