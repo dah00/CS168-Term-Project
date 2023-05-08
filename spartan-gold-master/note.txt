@@ -1,0 +1,185 @@
+
+/*
+3              h12
+2         h10        h11
+1      h7    h8    h9    h9   
+0    h1 h2 h3 h4 h5 h6 
+*/
+
+const crypto = require("crypto");
+
+class MerkleTree {
+    constructor(transactions) {
+        this.transactions = transactions;
+        this.hashes = transactions.map((transaction) => {
+            return this.hash(transaction.hash);
+        });
+        if (this.hashes.length % 2 === 1) {
+        this.hashes.push(this.hashes[this.hashes.length - 1]);
+        }
+        this.root = this.build();
+    }
+
+    // hash a transaction tx
+    hash(tx) {
+        const hash = crypto.createHash("sha256");
+        hash.update(tx);
+        return hash.digest("hex");
+    }
+    
+    build() {
+        while (this.hashes.length > 1) {
+            const level = [];
+            for (let i = 0; i < this.hashes.length; i += 2) {
+                const left = this.hashes[i];
+                const right = this.hashes[i + 1];
+                const hash = this.hash(left + right);
+                level.push(hash);                
+            }
+            this.hashes = level;
+        }
+        return this.hashes[0];
+    }
+}
+
+
+module.exports = MerkleTree;
+
+
+
+
+buildMerkleTree() {
+        let tree = this.hashes;
+        while (tree.length > 1) {
+            let level = [];
+            for (let i = 0; i < tree.length; i += 2) {
+                let left = tree[i];
+                let right = tree[i + 1];
+                let node = this.hash(left + right);
+                level.push(node);
+            }
+            // check if the length of the level array is odd, if so, push the last element again
+            if (tree.length !== 2 && level.length % 2 === 1) {   
+                level.push(level[level.length - 1]);
+            }
+            tree = level;
+        }
+        return tree;
+
+    }
+
+    buildMerkleTree() {
+        let tree = [this.hashes];
+        while (tree[tree.length - 1].length > 1) {
+            let level = [];
+            for (let i = 0; i < tree[tree.length - 1].length; i += 2) {
+                let left = tree[tree.length - 1][i];
+                let right = tree[tree.length - 1][i + 1];
+                let hash = this.hash(left + right);
+                level.push(hash);
+            }
+            // check if the length of the level array is odd, if so, push the last element again
+            if(level.length % 2 === 1) {
+                level.push(level[level.length - 1]);
+            }
+            tree.push(level);
+        }
+        return tree;
+    }    
+
+
+
+    getProof(data){
+        let proof = [];
+        let index = this.tree.indexOf(data);
+        if (index === -1) {
+            return proof;
+        }
+        while (index > 0) {
+            let sibling = 0;
+            if (index % 2 === 0) {
+                sibling = index - 1;
+            } else {
+                sibling = index + 1;
+            }
+            proof.push(this.tree[sibling]);
+            index = Math.floor((index + 1) / 2) - 1;
+        }
+        return proof;
+    }
+
+     getLeaveNodeDirection(tx) {
+        let index = this.transactions.indexOf(tx);
+        let direction = 0;
+        while (index > 0) {
+            if (index % 2 === 1) {
+                direction = 1;
+            }
+            index = Math.floor(index / 2);
+        }
+        return direction;
+    }
+
+
+/**
+     * Returns the Merkle proof for a given transaction (or data block).
+     * 
+     * @param {*} tx
+     * @returns {Array} proof
+     */
+    getProof(tx) {
+        let index = this.transactions.indexOf(tx);
+        let proof = [];
+
+        let level = 0;
+        while (index > 0) {
+            // if the index is odd, the sibling is on the left
+            if (index % 2 === 1) {
+                siblingIndex -= 1;
+            }
+            // if the index is even, the sibling is on the right
+            else {
+                siblingIndex += 1;
+            }   
+            if (siblingIndex < this.tree[level].length) {
+                proof.push(this.tree[level][siblingIndex]);
+            }
+            index = Math.floor(index / 2);
+            level++;
+        }
+        return proof;
+
+    }
+
+
+/**
+     * 
+     * @param {Array} proof 
+     * @param {*} rootHash 
+     * @param {*} data 
+     * @returns 
+     */
+    verifyProof(proof, rootHash, data) {
+        let index = this.tree[0].indexOf(data);
+        let isLeft = (index % 2 === 0)
+        let hash = this.hash(data);
+        for (let i = 0; i < proof.length; i++) {
+            if (isLeft) {
+                hash = this.hash(hash + proof[i]);
+            }
+            else {
+                hash = this.hash(proof[i] + hash);
+            }
+            isLeft = Math.floor(isLeft * 2);
+        }
+
+        return hash === rootHash;
+    }
+
+    let hash = this.hash(data);
+        for (let i = 0; i < proof.length; i++) {
+            let isLeft = (hash === this.hash(data + proof[i]));
+            let node = (isLeft) ? hash + proof[i] : proof[i] + hash;
+            hash = this.hash(node);
+        }
+        return (hash === rootHash);
