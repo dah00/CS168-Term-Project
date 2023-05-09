@@ -98,7 +98,7 @@ setTimeout(() => {
   fakeNet.register(timothy);
   donald.initialize();
   timothy.initialize();
-}, 2000);
+}, 5000);
 
 // Print out the final balances after it has been running for some time.
 setTimeout(() => {
@@ -137,4 +137,4 @@ setTimeout(() => {
 
 
   process.exit(0);
-}, 150000);
+}, 240000);

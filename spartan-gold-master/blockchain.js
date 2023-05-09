@@ -22,6 +22,7 @@ const DEFAULT_TX_FEE = 1;
 // Note that the genesis block is always considered to be confirmed.
 const CONFIRMED_DEPTH = 6;
 
+const BLOCK_UPDATE_INTERVAL = 16;
 
 /**
  * The Blockchain class tracks configuration information and settings for the blockchain,
@@ -40,7 +41,7 @@ module.exports = class Blockchain {
   static get COINBASE_AMT_ALLOWED() { return Blockchain.cfg.coinbaseAmount; }
   static get DEFAULT_TX_FEE() { return Blockchain.cfg.defaultTxFee; }
   static get CONFIRMED_DEPTH() { return Blockchain.cfg.confirmedDepth; }
-
+  static get BLOCK_UPDATE_INTERVAL() { return BLOCK_UPDATE_INTERVAL; }
 
   /**
    * Produces a new genesis block, giving the specified clients

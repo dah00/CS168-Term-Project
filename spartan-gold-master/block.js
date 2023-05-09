@@ -57,6 +57,13 @@ module.exports = class Block {
 
     this.timestamp = Date.now();
 
+    this.miningTime = prevBlock ? this.timestamp - prevBlock.timestamp : 0;
+
+    this.totalMiningTime = prevBlock ? prevBlock.totalMiningTime + this.miningTime : 0;
+    this.averageMiningTime = this.totalMiningTime / this.chainLength;
+
+
+
     // The address that will gain both the coinbase reward and transaction fees,
     // assuming that the block is accepted by the network.
     this.rewardAddr = rewardAddr;
