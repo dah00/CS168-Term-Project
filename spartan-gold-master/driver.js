@@ -6,6 +6,7 @@ let Client = require('./client.js');
 let Miner = require('./miner.js');
 let TimeMiner = require('./timeMiner.js')
 let Transaction = require('./transaction.js');
+let BlockMerkleTree = require('./blockMerkleTree.js');
 
 let FakeNet = require('./fake-net.js');
 
@@ -14,6 +15,9 @@ let adjustablePoW = true;
 if (adjustablePoW) {
   Miner = TimeMiner;
 }
+
+// Block = BlockMerkleTree;
+
 
 console.log("Starting simulation.  This may take a moment...");
 
@@ -73,6 +77,19 @@ mickey.initialize();
 console.log(`Alice is transferring 40 gold to ${bob.address}`);
 alice.postTransaction([{ amount: 40, address: bob.address }]);
 
+
+// console.log(`Alice is transferring 10 gold to ${bob.address}`);
+// alice.postTransaction([{ amount: 10, address: bob.address }]);
+// console.log(`Alice is transferring 20 gold to ${bob.address}`);
+// alice.postTransaction([{ amount: 20, address: bob.address }]);
+// console.log(`Alice is transferring 30 gold to ${bob.address}`);
+// alice.postTransaction([{ amount: 30, address: bob.address }]);
+// console.log(`Alice is transferring 40 gold to ${bob.address}`);
+// alice.postTransaction([{ amount: 40, address: bob.address }]);
+
+
+
+
 setTimeout(() => {
   console.log();
   console.log("***Starting a late-to-the-party miners***");
@@ -112,6 +129,12 @@ setTimeout(() => {
   console.log();
   console.log("Final balances (Timothy's perspective):");
   showBalances(timothy);
+
+// display the Merkle tree of the block
+  console.log();
+  console.log("Merkle tree of the block:");
+  console.log(minnie.currentBlock.merkleTree.toString());
+
 
   process.exit(0);
 }, 150000);

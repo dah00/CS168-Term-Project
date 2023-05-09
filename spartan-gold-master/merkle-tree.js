@@ -2,7 +2,7 @@
 
 let crypto = require('crypto');
 
-class MerkleTree {
+module.exports = class MerkleTree{
     // hash all transactions to make the leaves of the tree
     // All keep the number of leaves even by duplicating the last transaction if necessary.
     constructor(transactions) {
@@ -42,12 +42,14 @@ class MerkleTree {
         while (tree[level].length > 1) {
             tree.push([]);
             for (let i = 0; i < tree[level].length; i += 2) {
-
                 let left = tree[level][i];
-                let right = (i + 1 === tree[level].length) ? left : tree[level][i + 1];
+                let right = (i + 1 === tree[level].length) ? left : tree[level][i + 1];    
+                if((i + 1 === tree[level].length) && left === right)           
+                    tree[level].push(left);
                 let hash = this.hash(left + right);
                 tree[level + 1].push(hash);
             }
+            // console.log(`level ${level} = ${tree[level]}`);
             level++;
         }
         return tree;
@@ -92,4 +94,3 @@ class MerkleTree {
     }
 
 }
-exports.MerkleTree = MerkleTree;

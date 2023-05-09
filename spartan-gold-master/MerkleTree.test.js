@@ -5,7 +5,7 @@
 
 "use strict";
 const assert = require('assert');
-const { MerkleTree } = require('./merkle-tree');
+const MerkleTree = require('./merkle-tree');
 
 describe('MerkleTree', () => {
   it('should build a Merkle Tree and return the correct root hash', () => {
