@@ -74,7 +74,16 @@ console.log(`Alice is transferring 40 gold to ${bob.address}`);
 alice.postTransaction([{ amount: 40, address: bob.address }]);
 
 console.log(`Alice is transferring 1 gold to ${bob.address}`);
+charlie.postTransaction([{ amount: 1, address: bob.address }]);
+
+console.log(`Alice is transferring 1 gold to ${bob.address}`);
+alice.postTransaction([{ amount: 50, address: bob.address }]);
+
+console.log(`Alice is transferring 1 gold to ${bob.address}`);
 alice.postTransaction([{ amount: 1, address: bob.address }]);
+
+console.log(`charlie is transferring 1 gold to ${bob.address}`);
+charlie.postTransaction([{ amount: 1, address: bob.address }]);
 
 console.log(`Alice is transferring 1 gold to ${bob.address}`);
 alice.postTransaction([{ amount: 1, address: bob.address }]);
@@ -82,8 +91,20 @@ alice.postTransaction([{ amount: 1, address: bob.address }]);
 console.log(`Alice is transferring 1 gold to ${bob.address}`);
 alice.postTransaction([{ amount: 1, address: bob.address }]);
 
+console.log(`charlie is transferring 1 gold to ${bob.address}`);
+charlie.postTransaction([{ amount: 1, address: bob.address }]);
+
 console.log(`Alice is transferring 1 gold to ${bob.address}`);
 alice.postTransaction([{ amount: 1, address: bob.address }]);
+
+console.log(`Alice is transferring 1 gold to ${bob.address}`);
+alice.postTransaction([{ amount: 1, address: bob.address }]);
+
+console.log(`Alice is transferring 100 gold to ${bob.address}`);
+alice.postTransaction([{ amount: 100, address: bob.address }]);
+
+console.log(`Bob is transferring 100 gold to ${alice.address}`);
+bob.postTransaction([{ amount: 80, address: alice.address }]);
 
 
 
@@ -129,4 +150,4 @@ setTimeout(() => {
   showBalances(timothy);
 
   process.exit(0);
-}, 10000);
+}, 60000);

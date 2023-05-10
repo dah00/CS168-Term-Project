@@ -6,6 +6,9 @@ const POST_TRANSACTION = "POST_TRANSACTION";
 const PROOF_FOUND = "PROOF_FOUND";
 const START_MINING = "START_MINING";
 
+// Const block fixed size
+const BLOCK_FIXED_SIZE = 8;
+
 // Constants for mining
 const NUM_ROUNDS_MINING = 2000;
 
@@ -29,6 +32,7 @@ const BLOCK_UPDATE_INTERVAL = 16;
  * as well as some utility methods to allow for easy extensibility.
  */
 module.exports = class Blockchain {
+  static get BLOCK_FIXED_SIZE() {return BLOCK_FIXED_SIZE; }
   static get MISSING_BLOCK() { return MISSING_BLOCK; }
   static get POST_TRANSACTION() { return POST_TRANSACTION; }
   static get PROOF_FOUND() { return PROOF_FOUND; }

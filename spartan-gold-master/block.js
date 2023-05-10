@@ -189,6 +189,11 @@ module.exports = class Block {
    * @returns {Boolean} - True if the transaction was added successfully.
    */
   addTransaction(tx, client) {
+    // if(this.transactions.size > 8){
+    //   console.log("Transaction from addTransaction", this.transactions);
+    //   this.transactions = this.transactions.slice(0,8);
+    // }
+
     if (this.transactions.get(tx.id)) {
       if (client) client.log(`Duplicate transaction ${tx.id}.`);
       return false;
@@ -218,7 +223,8 @@ module.exports = class Block {
     }
 
     // Adding the transaction to the block
-    //this.transactions.set(tx.id, tx);
+    this.transactions.set(tx.id, tx);
+    
     this.transactionMerkle.push(tx.id);
 
     // Taking gold from the sender
