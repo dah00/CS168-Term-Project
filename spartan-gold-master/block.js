@@ -1,6 +1,7 @@
 "use strict";
 
 const Blockchain = require('./blockchain.js');
+const MerkleTree = require("./merkle-tree");
 
 const utils = require('./utils.js');
 
@@ -38,6 +39,7 @@ module.exports = class Block {
 
     // Storing transactions in a Map to preserve key order.
     this.transactions = new Map();
+    this.transactionMerkle = [];
 
     // Adding toJSON methods for transactions and balances, which help with
     // serialization.
@@ -216,7 +218,8 @@ module.exports = class Block {
     }
 
     // Adding the transaction to the block
-    this.transactions.set(tx.id, tx);
+    //this.transactions.set(tx.id, tx);
+    this.transactionMerkle.push(tx.id);
 
     // Taking gold from the sender
     let senderBalance = this.balanceOf(tx.from);
@@ -302,4 +305,18 @@ module.exports = class Block {
   contains(tx) {
     return this.transactions.has(tx.id);
   }
+
+  buildMerkleTree() {
+    this.merkleTree = new MerkleTree(this.transactionMerkle);
+    this.rootHash = this.merkleTree.getRootHash();
+  }
+
+  getBlockProof(data) {
+    return this.merkleTree.getProof(data);
+  }
+
+  verifyBlockProof(data, proof) {
+    return this.merkleTree.verifyProof(data, proof, this.rootHash);
+  }
+
 };

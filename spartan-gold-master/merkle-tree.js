@@ -3,8 +3,6 @@
 let crypto = require('crypto');
 
 module.exports = class MerkleTree{
-    // hash all transactions to make the leaves of the tree
-    // All keep the number of leaves even by duplicating the last transaction if necessary.
     constructor(transactions) {
         this.transactions = transactions;
         this.hashes = transactions.map(tx => this.hash(tx));
@@ -31,10 +29,6 @@ module.exports = class MerkleTree{
      * @param {Array} transactions
      * @returns {Array} tree
      */
-
-    // Build a Merkle tree from a list of transactions such that
-    // store the tree in an array of arrays where the first element is leaves that contains the hashes of the transactions
-    
     buildMerkleTree() {
         let tree = [];
         tree.push(this.hashes);
@@ -91,6 +85,10 @@ module.exports = class MerkleTree{
         }
         return (hash === this.getRootHash());
 
+    }
+
+    printTree() {
+        console.log(JSON.stringify(this.tree, null, 2));
     }
 
 }

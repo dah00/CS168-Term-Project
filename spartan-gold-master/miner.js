@@ -60,6 +60,10 @@ module.exports = class Miner extends Client {
     this.transactions.forEach((tx) => {
       this.currentBlock.addTransaction(tx, this);
     });
+
+    this.currentBlock.buildMerkleTree();
+    console.log(`${this.currentBlock.merkleTree.printTree()}`)
+
     this.transactions.clear();
 
     // Start looking for a proof at 0.
