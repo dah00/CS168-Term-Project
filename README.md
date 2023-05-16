@@ -14,3 +14,4 @@ To launch the application
   1. Navigate to the spartan-gold-master directory
   2. In the terminal, run the command 'node driver.js'  
 
+Logs will contain message regarding these features for ease of verification.
