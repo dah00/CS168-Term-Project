@@ -25,7 +25,7 @@ const DEFAULT_TX_FEE = 1;
 // Note that the genesis block is always considered to be confirmed.
 const CONFIRMED_DEPTH = 6;
 
-const BLOCK_UPDATE_INTERVAL = 16;
+const BLOCK_UPDATE_INTERVAL = 32;
 
 /**
  * The Blockchain class tracks configuration information and settings for the blockchain,
