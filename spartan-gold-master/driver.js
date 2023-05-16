@@ -122,7 +122,7 @@ setTimeout(() => {
 setTimeout(() => {
   console.log();
   console.log(`Minnie has a chain of length ${minnie.currentBlock.chainLength}:`);
-  console.log(`Minie block ${minnie.currentBlock.toString()}`);
+  //console.log(`Minie block ${minnie.currentBlock.toString()}`);
 
   console.log();
   console.log(`Mickey has a chain of length ${mickey.currentBlock.chainLength}:`);
@@ -150,4 +150,4 @@ setTimeout(() => {
   showBalances(timothy);
 
   process.exit(0);
-}, 60000);
+}, 20000);

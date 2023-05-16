@@ -3,7 +3,7 @@
 const Block = require('./block.js');
 const MerkleTree = require('./merkle-tree.js');
 
-module.exports = blockMerkleTree = class blockMerkleTree extends Block {
+module.exports = class blockMerkleTree extends Block {
   constructor(rewardAddr, prevBlock, target, coinbaseReward) {
     super(rewardAddr, prevBlock, target, coinbaseReward);
     this.transactions = [];

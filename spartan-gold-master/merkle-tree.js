@@ -88,7 +88,9 @@ module.exports = class MerkleTree{
     }
 
     printTree() {
+        if (this.tree[0].length > 0) {
         console.log(JSON.stringify(this.tree, null, 2));
+        }
     }
 
 }

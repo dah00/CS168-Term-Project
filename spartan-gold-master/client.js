@@ -133,7 +133,7 @@ module.exports = class Client extends EventEmitter {
     if (totalPayments > this.availableGold) {
       throw new Error(`Requested ${totalPayments}, but account only has ${this.availableGold}.`);
     }
-
+    //console.log(this.pendingOutgoingTransactions);
     // Create and broadcast the transaction.
     return this.postGenericTransaction({
       outputs: outputs,
@@ -305,7 +305,6 @@ module.exports = class Client extends EventEmitter {
       block = this.blocks.get(block.prevBlockHash);
     }
     this.lastConfirmedBlock = block;
-
     // Update pending transactions according to the new last confirmed block.
     this.pendingOutgoingTransactions.forEach((tx, txID) => {
       if (this.lastConfirmedBlock.contains(tx)) {

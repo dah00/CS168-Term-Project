@@ -56,9 +56,10 @@ module.exports = class Miner extends Client {
     // by a recently received block, but that the miner is aware of.
     txSet.forEach((tx) => this.transactions.add(tx));
 
+    this.resendPendingTransactions();
     // Add queued-up transactions to block.
     if(this.transactions.size > Blockchain.BLOCK_FIXED_SIZE){
-      //console.log("Transaction from addTransaction", this.transactions);
+      //console.log("Block full!");
       let val = 0;
       this.transactions.forEach((tx) => {
         if(val >= Blockchain.BLOCK_FIXED_SIZE){
@@ -67,19 +68,14 @@ module.exports = class Miner extends Client {
         }
         val++;
       });
-      //console.log("Pending transaction",this.pendingOutgoingTransactions);
-
     }
-    this.resendPendingTransactions();
-    //console.log("Transaction from addTransaction", this.transactions);
+
     this.transactions.forEach((tx) => {
       this.currentBlock.addTransaction(tx, this);
     });
 
     this.currentBlock.buildMerkleTree();
-    //console.log("Transaction: ", this.transactions);
-    console.log(`${this.currentBlock.merkleTree.printTree()}`)
-
+    this.currentBlock.merkleTree.printTree();
 
     this.transactions.clear();
 
